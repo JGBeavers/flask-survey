@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey as survey
 
@@ -17,13 +17,16 @@ def home_page():
 
 @app.route('/questions/<int:id>')
 def show_questions(id):
-    """Display current question using id and choices, send choice to /answer"""
+    """Display current question using id and choices, send choice to /answer""" 
 
-    question = survey.questions[id]
+    if (len(responses) != id):
+        flash(f"Invalid question id: {id}.")
+        return redirect(f"/questions/{len(responses)}")
 
     if (len(responses) == len(survey.questions)):
-        # They've answered all the questions! Thank them.
-        return redirect("/complete")
+        return redirect("/complete")  
+    
+    question = survey.questions[id]
 
     return render_template('questions.html', survey=survey, question=question)
 
@@ -35,7 +38,6 @@ def get_answer():
     responses.append(choice)
 
     if (len(responses) == len(survey.questions)):
-        # They've answered all the questions! Thank them.
         return redirect("/complete")
 
     return redirect(f'/questions/{len(responses)}')

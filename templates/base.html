@@ -7,7 +7,8 @@
   </head>
   <body>
     <h1>{{survey.title}}</h1>
-
-    {% block content %}BODY CONTENT GOES HERE{% endblock %}
+    {% for msg in get_flashed_messages() %}
+    <p>{{ msg }}</p>
+    {% endfor %}{% block content %}BODY CONTENT GOES HERE{% endblock %}
   </body>
 </html>
