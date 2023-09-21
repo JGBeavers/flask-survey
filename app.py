@@ -21,6 +21,10 @@ def show_questions(id):
 
     question = survey.questions[id]
 
+    if (len(responses) == len(survey.questions)):
+        # They've answered all the questions! Thank them.
+        return redirect("/complete")
+
     return render_template('questions.html', survey=survey, question=question)
 
 @app.route('/answer', methods=['POST'])
@@ -30,5 +34,14 @@ def get_answer():
     choice = request.form['answer']
     responses.append(choice)
 
+    if (len(responses) == len(survey.questions)):
+        # They've answered all the questions! Thank them.
+        return redirect("/complete")
 
     return redirect(f'/questions/{len(responses)}')
+
+@app.route('/complete')
+def survey_complete():
+    """redirect to survey complete page when all questions answered"""
+
+    return render_template('complete.html', survey=survey)
