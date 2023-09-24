@@ -9,6 +9,6 @@
     <h1>{{survey.title}}</h1>
     {% for msg in get_flashed_messages() %}
     <p>{{ msg }}</p>
-    {% endfor %}{% block content %}BODY CONTENT GOES HERE{% endblock %}
+    {% endfor %}{% block content %}BODY CONTENT{% endblock %}
   </body>
 </html>
